@@ -1,0 +1,93 @@
+<!--<c-container [fluid]="true" class="px-1 mb-3">-->
+<!--  <c-row class="w-100 justify-content-around">-->
+<!--    <c-col cCol="3" *ngFor="let item of items">-->
+<!--      <c-card class="{{item.class}} text-center">-->
+<!--        <c-card-body>-->
+<!--          <p cCardText>{{item.name}}</p>-->
+<!--        </c-card-body>-->
+<!--      </c-card>-->
+<!--    </c-col>-->
+<!--  </c-row>-->
+<!--</c-container>-->
+
+
+<c-accordion [flush]="true">
+  <c-accordion-item #item0="cAccordionItem" [visible]="true">
+    <ng-template cTemplateId="accordionHeaderTemplate">
+      <button
+        (click)="item0.toggleItem(); item0.visible && loadItems('today', 0)"
+        [collapsed]="!item0.visible"
+        cAccordionButton
+        cTextColor="white"
+        cBgColor="success">
+        Hoje
+      </button>
+    </ng-template>
+    <ng-template cTemplateId="accordionBodyTemplate">
+      <div class="accordion-body">
+        <strong>This is the first item's accordion body.</strong> It is hidden by default,
+        until the collapse plugin adds the appropriate classes that we use to style each
+        element. These classes control the overall appearance, as well as the showing and
+        hiding via CSS transitions. You can modify any of this with custom CSS or overriding
+        our default variables. It's also worth noting that just about any HTML can go within
+        the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </ng-template>
+  </c-accordion-item>
+  <c-accordion-item #item1="cAccordionItem" [visible]="false">
+    <ng-template cTemplateId="accordionHeaderTemplate">
+      <button (click)="item1.toggleItem(); item1.visible && loadItems('tomorrow', 0)" [collapsed]="!item1.visible" cAccordionButton cBgColor="info">
+        Amanha
+      </button>
+    </ng-template>
+    <ng-template cTemplateId="accordionBodyTemplate">
+      <div class="accordion-body">
+        <div *ngIf="reminders !== undefined && reminders.length === 0" class="text-center">
+          <p>Sem tarefas.</p>
+        </div>
+        <ul *ngIf="reminders !== undefined && reminders.length > 0" cListGroup>
+          <li cListGroupItem *ngFor="let reminder of reminders">
+            <c-form-check>
+              <input cFormCheckInput id="checkOne" type="checkbox" />
+              <label cFormCheckLabel for="checkOne">{{reminder.title}}</label>
+            </c-form-check>
+          </li>
+        </ul>
+      </div>
+    </ng-template>
+  </c-accordion-item>
+  <c-accordion-item #item3="cAccordionItem" [visible]="false">
+    <ng-template cTemplateId="accordionHeaderTemplate">
+      <button (click)="item3.toggleItem(); item3.visible && loadItems('weekly', 0)" [collapsed]="!item3.visible" cTextColor="white" cAccordionButton cBgColor="danger">
+        Semanais
+      </button>
+    </ng-template>
+    <ng-template cTemplateId="accordionBodyTemplate">
+      <div class="accordion-body">
+        <strong>This is the third item's accordion body.</strong> It is hidden by default,
+        until the collapse plugin adds the appropriate classes that we use to style each
+        element. These classes control the overall appearance, as well as the showing and
+        hiding via CSS transitions. You can modify any of this with custom CSS or overriding
+        our default variables. It's also worth noting that just about any HTML can go within
+        the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </ng-template>
+  </c-accordion-item>
+  <c-accordion-item #item4="cAccordionItem" [visible]="false">
+    <ng-template cTemplateId="accordionHeaderTemplate">
+      <button (click)="item4.toggleItem(); item4.visible && loadItems('monthly', 0)" [collapsed]="!item4.visible" cAccordionButton cBgColor="secondary">
+        Mensais
+      </button>
+    </ng-template>
+    <ng-template cTemplateId="accordionBodyTemplate">
+      <div class="accordion-body">
+        <strong>This is the third item's accordion body.</strong> It is hidden by default,
+        until the collapse plugin adds the appropriate classes that we use to style each
+        element. These classes control the overall appearance, as well as the showing and
+        hiding via CSS transitions. You can modify any of this with custom CSS or overriding
+        our default variables. It's also worth noting that just about any HTML can go within
+        the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </ng-template>
+  </c-accordion-item>
+</c-accordion>

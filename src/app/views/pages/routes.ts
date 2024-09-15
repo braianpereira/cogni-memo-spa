@@ -28,5 +28,19 @@ export const routes: Routes = [
     data: {
       title: 'Register Page'
     }
+  },
+  {
+    path: 'reminders',
+    loadComponent: () => import('./reminders/reminders.component').then(m => m.RemindersComponent),
+    data: {
+      title: 'Lembretes'
+    }
+  },
+  {
+    path: 'memories',
+    loadComponent: ()=> import('./memories/memories.component').then(m => m.MemoriesComponent),
+    data: {
+      title: 'Memorias'
+    }
   }
 ];

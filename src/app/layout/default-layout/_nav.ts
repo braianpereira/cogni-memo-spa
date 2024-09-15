@@ -11,6 +11,16 @@ export const navItems: INavData[] = [
     }
   },
   {
+    name: 'Lembretes',
+    url: '/reminders',
+    iconComponent: { name: 'cil-task' },
+  },
+  {
+    name: 'Memorias',
+    url: '/memories',
+    iconComponent: { name: 'cil-book' },
+  },
+  {
     title: true,
     name: 'Theme'
   },

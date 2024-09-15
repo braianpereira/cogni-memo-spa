@@ -26,7 +26,7 @@ import {
   cilArrowTop,
   cilBasket,
   cilBell,
-  cilBold,
+  cilBold, cilBook,
   cilBookmark,
   cilCalculator,
   cilCalendar,
@@ -196,7 +196,8 @@ export const iconSubset = {
   cilUserFollow,
   cilUserUnfollow,
   logo,
-  signet
+  signet,
+  cilBook
 };
 
 export enum IconSubset {
@@ -296,6 +297,7 @@ export enum IconSubset {
   cilUserFollow = 'cilUserFollow',
   cilUserUnfollow = 'cilUserUnfollow',
   logo = 'logo',
-  signet = 'signet'
+  signet = 'signet',
+  cilBook = 'cilBook'
 }
 

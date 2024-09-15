@@ -21,6 +21,20 @@ export const routes: Routes = [
         loadChildren: () => import('./views/dashboard/routes').then((m) => m.routes)
       },
       {
+        path: 'reminders',
+        loadComponent: () => import('./views/pages/reminders/reminders.component').then(m => m.RemindersComponent),
+        data: {
+          title: 'Lembretes'
+        }
+      },
+      {
+        path: 'memories',
+        loadComponent: ()=> import('./views/pages/memories/memories.component').then(m => m.MemoriesComponent),
+        data: {
+          title: 'Memorias'
+        }
+      },
+      {
         path: 'theme',
         loadChildren: () => import('./views/theme/routes').then((m) => m.routes)
       },

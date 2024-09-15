@@ -25,11 +25,11 @@ export class AuthService {
     return this.httpClient
       .post(
         `${this.baseUrl}/login`,
-        data,
+        {...data, remember: true},
         { withCredentials: true }
       )
       .pipe(tap((result) => {
-        localStorage.setItem('authUser', JSON.stringify(result));
+        localStorage.setItem('authUser', JSON.stringify("logued"));
       }));
   }
 

@@ -12,7 +12,7 @@
           <c-accordion [alwaysOpen]="false" class="shadow rounded-2">
             <c-accordion-item #item0="cAccordionItem" [visible]="false">
               <ng-template cTemplateId="accordionHeaderTemplate">
-                <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton cBgColor="info">
+                <button (click)="item0.toggleItem()"  [collapsed]="!item0.visible" cAccordionButton cBgColor="info">
                   Accordion item #0
                 </button>
               </ng-template>
