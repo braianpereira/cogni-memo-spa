@@ -42,12 +42,12 @@
     </ng-template>
     <ng-template cTemplateId="accordionBodyTemplate">
       <div class="accordion-body">
-        <div *ngIf="reminders !== undefined && reminders.length === 0" class="text-center">
+        <div *ngIf="reminders !== undefined && reminders.length === 0" class="text-center fs-4">
           <p>Sem tarefas.</p>
         </div>
         <ul *ngIf="reminders !== undefined && reminders.length > 0" cListGroup>
           <li cListGroupItem *ngFor="let reminder of reminders">
-            <c-form-check>
+            <c-form-check class="fs-4">
               <input cFormCheckInput id="checkOne" type="checkbox" />
               <label cFormCheckLabel for="checkOne">{{reminder.title}}</label>
             </c-form-check>

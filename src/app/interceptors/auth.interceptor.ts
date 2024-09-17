@@ -17,8 +17,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
     // catchError captura erros
     catchError((error: HttpErrorResponse) => {
-      console.error('Error Code:', error.status); // Captura o código do erro
-      console.error('Error Message:', error.message); // Exibe a mensagem de erro
+      // console.error('Error Code:', error.status); // Captura o código do erro
+      // console.error('Error Message:', error.message); // Exibe a mensagem de erro
 
       // Aqui você pode implementar lógica adicional, como redirecionamento no erro 401
       if (error.status === 401) {
@@ -28,7 +28,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       }
 
       // Tratamento de erros ou retorno para o fluxo de erro
-      return throwError(() => new Error(error.message || 'Erro desconhecido'));
+      return throwError(() => error);
+      // return error
     })
   );
 };

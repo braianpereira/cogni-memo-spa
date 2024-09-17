@@ -1,12 +1,13 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {GlobalConstants} from "../common/global-constants";
 
 @Injectable({
   providedIn: 'root'
 })
 export class RemindersService {
-  baseUrl = 'http://cogni-memo.test:82/api';
+  baseUrl = GlobalConstants.appURL + '/api';
 
   constructor(private httpClient: HttpClient) { }
 

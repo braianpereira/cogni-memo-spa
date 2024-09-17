@@ -2,13 +2,14 @@ import {inject, Injectable} from '@angular/core';
 import { tap } from "rxjs/operators";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {GlobalConstants} from "../common/global-constants";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   httpClient = inject(HttpClient);
-  baseUrl = 'http://cogni-memo.test:82';
+  baseUrl = GlobalConstants.appURL;
 
   constructor() { }
 

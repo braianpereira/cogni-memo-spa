@@ -5,27 +5,59 @@
         <c-card-group>
           <c-card class="p-4">
             <c-card-body>
-              <form cForm (ngSubmit)="onSubmit()">
-                <h1>Login</h1>
-                <p class="text-body-secondary">Sign In to your account</p>
+              <form
+                cForm
+                (ngSubmit)="onSubmit()"
+                [validated]="false"
+                novalidate
+              >
+                <h1>Entrar</h1>
                 <c-input-group class="mb-3" [formGroup]="loginForm">
                   <span cInputGroupText>
                     <svg cIcon name="cilUser"></svg>
                   </span>
-                  <input autoComplete="email" cFormControl formControlName="email" placeholder="E-mail" />
+                  <input
+                    autoComplete="email"
+                    cFormControl
+                    required
+                    formControlName="email"
+                    placeholder="E-mail"
+                    [ngClass]="{ 'is-invalid':loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched) }"
+                  />
+                  <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)"
+                       class="invalid-feedback">
+                    <div *ngIf="loginForm.get('email')?.hasError('required')">
+                      Senha obrigatória.
+                    </div>
+                    <div *ngIf="loginForm.get('email')?.hasError('serverError')">
+                      {{ loginForm.get('email')?.getError('serverError') }}
+                    </div>
+                  </div>
                 </c-input-group>
-                <c-input-group class="mb-4" [formGroup]="loginForm">
+                <c-input-group class="mb-2" [formGroup]="loginForm">
                   <span cInputGroupText>
                     <svg cIcon name="cilLockLocked"></svg>
                   </span>
                   <input
                     autoComplete="current-password"
                     cFormControl
-                    placeholder="Password"
+                    required
+                    placeholder="Senha"
                     type="password"
                     formControlName="password"
+                    [ngClass]="{ 'is-invalid':loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched) }"
                   />
+                  <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)"
+                       class="invalid-feedback">
+                    <div *ngIf="loginForm.get('password')?.hasError('required')">
+                      Senha obrigatória.
+                    </div>
+                  </div>
                 </c-input-group>
+                <c-form-check class="mb-4">
+                  <input cFormCheckInput id="checkOne" type="checkbox" />
+                  <label cFormCheckLabel for="checkOne">Permanecer logado</label>
+                </c-form-check>
                 <c-row>
                   <c-col xs="6">
                     <button cButton class="px-4" type="submit" color="primary">
@@ -34,7 +66,7 @@
                   </c-col>
                   <c-col class="text-right" xs="6">
                     <button cButton class="px-0" color="link">
-                      Forgot password?
+                      Esqueceu a senha?
                     </button>
                   </c-col>
                 </c-row>
@@ -44,13 +76,13 @@
           <c-card [ngStyle]="{'minWidth.%': 44}" class="text-white bg-primary py-5">
             <c-card-body class="text-center">
               <div>
-                <h2>Sign up</h2>
+                <h2>Criar conta</h2>
                 <p>
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                   tempor incididunt ut labore et dolore magna aliqua.
                 </p>
                 <button [active]="true" cButton class="mt-3" color="primary" routerLink="/register">
-                  Register Now!
+                  Registre-se agora!
                 </button>
               </div>
             </c-card-body>
