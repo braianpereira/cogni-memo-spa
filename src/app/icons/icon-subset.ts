@@ -32,7 +32,7 @@ import {
   cilCalendar,
   cilChart,
   cilChartPie,
-  cilCheck,
+  cilCheck, cilCheckAlt,
   cilChevronLeft,
   cilChevronRight,
   cilCloudDownload,
@@ -51,7 +51,7 @@ import {
   cilHome,
   cilInbox,
   cilIndentDecrease,
-  cilIndentIncrease,
+  cilIndentIncrease, cilInfo,
   cilItalic,
   cilJustifyCenter,
   cilLanguage,
@@ -93,7 +93,8 @@ import {
   cilUser,
   cilUserFemale,
   cilUserFollow,
-  cilUserUnfollow
+  cilUserUnfollow, cilWarning,
+  cilXCircle
 } from '@coreui/icons';
 
 import { signet } from './signet';
@@ -197,7 +198,11 @@ export const iconSubset = {
   cilUserUnfollow,
   logo,
   signet,
-  cilBook
+  cilBook,
+  cilXCircle,
+  cilInfo,
+  cilWarning,
+  cilCheckAlt
 };
 
 export enum IconSubset {
@@ -298,6 +303,11 @@ export enum IconSubset {
   cilUserUnfollow = 'cilUserUnfollow',
   logo = 'logo',
   signet = 'signet',
-  cilBook = 'cilBook'
+  cilBook = 'cilBook',
+  cilXCircle = 'cilXCircle',
+  cilDanger = 'cilXCircle',
+  cilInfo = 'cilInfo',
+  cilWarning = 'cilWarning',
+  cilCheckAlt = 'cilCheckAlt',
 }
 

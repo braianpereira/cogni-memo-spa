@@ -18,19 +18,22 @@ import {
 } from '@coreui/angular';
 import {AuthService} from "../../../auth/auth.service";
 import {Router, RouterLink} from "@angular/router";
-import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {HttpErrorResponse} from "@angular/common/http";
+import {MessageComponent} from "../../../components/message/message.component";
+import {MessageService} from "../../../services/message.service";
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
     standalone: true,
-  imports: [ContainerComponent, RowComponent, ColComponent, CardGroupComponent, TextColorDirective, CardComponent, CardBodyComponent, FormDirective, InputGroupComponent, InputGroupTextDirective, IconDirective, FormControlDirective, ButtonDirective, NgStyle, ReactiveFormsModule, FormsModule, RouterLink, FormCheckComponent, FormCheckInputDirective, FormCheckLabelDirective, NgIf, NgClass]
+  imports: [ContainerComponent, RowComponent, ColComponent, CardGroupComponent, TextColorDirective, CardComponent, CardBodyComponent, FormDirective, InputGroupComponent, InputGroupTextDirective, IconDirective, FormControlDirective, ButtonDirective, NgStyle, ReactiveFormsModule, FormsModule, RouterLink, FormCheckComponent, FormCheckInputDirective, FormCheckLabelDirective, NgIf, NgClass, MessageComponent]
 })
 export class LoginComponent implements OnInit{
 
   authService = inject(AuthService);
+  messageService = inject(MessageService)
   router = inject(Router);
   fb = inject(FormBuilder)
 
@@ -57,38 +60,39 @@ export class LoginComponent implements OnInit{
         next: () => {
             this.authService.login(this.loginForm?.value)
               .subscribe({
-                next: (data: any) => {
+                next: () => {
                   if(this.authService.isLoggedIn()){
                     this.router.navigate(['/dashboard']);
                   }
                 },
                 error: error => {
-                  console.log(error.status)
                   if (error instanceof HttpErrorResponse) {
                     if (error.status === 422) {
                       const serverErrors = error.error.errors;
+
+                      this.messageService.add({
+                        severity: 'danger',
+                        detail: error.error.message,
+                        summary: 'Falha ao gravar',
+                      })
+
                       this.handleServerErrors(serverErrors);
-                      // this.messageService.add({
-                      //   severity: 'error',
-                      //   summary: 'Falha ao gravar',
-                      //   detail: error.error.message
-                      // });
                     }
 
                     if (error.error.error) {
-                      // this.messageService.add({
-                      //   severity: 'error',
-                      //   summary: 'Falha ao gravar',
-                      //   detail: error.error.error
-                      // });
+                      this.messageService.add({
+                        severity: 'danger',
+                        summary: 'Falha ao gravar',
+                        detail: error.error.error
+                      });
                     }
                   } else {
                     console.log('An error occurred:', error);
-                    // this.messageService.add({
-                    //   severity: 'error',
-                    //   summary: 'Falha ao gravar',
-                    //   detail: 'Ocorreu um erro ao processar a solicitação.'
-                    // });
+                    this.messageService.add({
+                      severity: 'danger',
+                      summary: 'Falha ao gravar',
+                      detail: 'Ocorreu um erro ao processar a solicitação.'
+                    });
                   }
                 }
               });
@@ -99,35 +103,14 @@ export class LoginComponent implements OnInit{
   }
 
   handleServerErrors(errors: any): void {
-    // this.formFieldsS = formFields
 
     for (const controlName in errors) {
       if (errors.hasOwnProperty(controlName)) {
         const control = this.loginForm.get(controlName);
-        console.log(errors, errors[controlName])
         if (control) {
           control.setErrors({ serverError: errors[controlName] });
         }
       }
     }
-
-    //this.focusOnFirstError();
   }
-
-  // focusOnFirstError(): void {
-  //   for (const element of this.formFieldsS) {
-  //     const errors = this.formulario.get(element.nativeElement.id)?.errors;
-  //     if (errors) {
-  //       if (
-  //         this.formulario.get(element.nativeElement.id)?.enabled &&
-  //         element.nativeElement.offsetParent !== null &&
-  //         !element.nativeElement.disabled
-  //       ) {
-  //         this.renderer2.selectRootElement(element.nativeElement).focus();
-  //         break;
-  //       }
-  //     }
-  //   }
-  // }
-
 }

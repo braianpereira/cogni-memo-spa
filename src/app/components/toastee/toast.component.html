@@ -1,0 +1,22 @@
+<ng-container>
+  <c-toast-header [closeButton]="closeButton" class="bg-primary" >
+
+  </c-toast-header>
+
+  <c-toast-body #toast [cToastClose]="toast.toast" class="bg-{{toast.toast?.color }} rounded">
+    <div class="d-flex">
+      <div *ngIf="getIcon(toast.toast?.color).length" class="me-2 my-auto">
+        <svg cIcon class="" size="xl" [name]="getIcon(toast.toast?.color)" cAlign="middle"></svg>
+      </div>
+      <div class="me-5">
+        <p class="mb-1"><span *ngIf="title && title.length > 0"><strong>{{ title }}</strong></span> {{ detail }}</p>
+        <ng-content />
+        <c-progress thin [value]="25*(toast.toast?.clock ?? 1)" />
+      </div>
+      <div class="me-2 ms-5 m-auto">
+        <button aria-label="close" cButtonClose class="" (click)="toast.toast && (toast.toast.visible=false)"></button>
+      </div>
+    </div>
+
+  </c-toast-body>
+</ng-container>
