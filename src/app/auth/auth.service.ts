@@ -13,7 +13,7 @@ export class AuthService {
 
   constructor() { }
 
-  signup(data: any) {
+  register(data: any) {
     return this.httpClient
       .post(`${this.baseUrl}/register`, data)
       .pipe(tap((result) => {

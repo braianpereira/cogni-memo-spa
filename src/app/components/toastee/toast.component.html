@@ -1,8 +1,4 @@
 <ng-container>
-  <c-toast-header [closeButton]="closeButton" class="bg-primary" >
-
-  </c-toast-header>
-
   <c-toast-body #toast [cToastClose]="toast.toast" class="bg-{{toast.toast?.color }} rounded">
     <div class="d-flex">
       <div *ngIf="getIcon(toast.toast?.color).length" class="me-2 my-auto">
