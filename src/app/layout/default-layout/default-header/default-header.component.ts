@@ -28,6 +28,7 @@ import {
 
 import { IconDirective } from '@coreui/icons-angular';
 import {AuthService} from "../../../auth/auth.service";
+import {LoadingService} from "../../../services/loading.service";
 
 @Component({
   selector: 'app-default-header',
@@ -42,6 +43,7 @@ export class DefaultHeaderComponent extends HeaderComponent {
 
   authService = inject(AuthService);
   router = inject(Router);
+  loadingService = inject(LoadingService);
 
   readonly colorModes = [
     { name: 'light', text: 'Light', icon: 'cilSun' },
@@ -136,10 +138,11 @@ export class DefaultHeaderComponent extends HeaderComponent {
   ];
 
   logout() {
-    this.authService.logout().subscribe(
-      next => {
-        this.router.navigate(['/']);
+    this.loadingService.show()
+    this.authService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
       }
-    )
+    })
   }
 }

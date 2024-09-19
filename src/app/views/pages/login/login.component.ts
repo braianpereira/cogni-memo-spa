@@ -22,6 +22,7 @@ import {FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators} 
 import {HttpErrorResponse} from "@angular/common/http";
 import {MessageComponent} from "../../../components/message/message.component";
 import {MessageService} from "../../../services/message.service";
+import {LoadingService} from "../../../services/loading.service";
 
 @Component({
     selector: 'app-login',
@@ -34,6 +35,7 @@ export class LoginComponent implements OnInit{
 
   authService = inject(AuthService);
   messageService = inject(MessageService)
+  loadingService = inject(LoadingService)
   router = inject(Router);
   fb = inject(FormBuilder)
 
@@ -46,7 +48,7 @@ export class LoginComponent implements OnInit{
   validation: unknown;
 
   ngOnInit() {
-
+    this.loadingService.hide()
   }
 
   email(){
@@ -54,50 +56,55 @@ export class LoginComponent implements OnInit{
   }
 
   onSubmit(){
+    this.loadingService.show()
+
     this.loginForm.markAllAsTouched()
+
     if(this.loginForm?.valid){
       this.authService.getCsrfToken().subscribe({
         next: () => {
-            this.authService.login(this.loginForm?.value)
-              .subscribe({
-                next: () => {
-                  if(this.authService.isLoggedIn()){
-                    this.router.navigate(['/dashboard']);
+          this.authService.login(this.loginForm?.value)
+            .subscribe({
+              next: () => {
+                if(this.authService.isLoggedIn()){
+                  this.loadingService.hide()
+                  this.router.navigate(['/dashboard']);
+                }
+              },
+              error: error => {
+                if (error instanceof HttpErrorResponse) {
+                  if (error.status === 422) {
+                    const serverErrors = error.error.errors;
+
+                    this.messageService.add({
+                      severity: 'danger',
+                      detail: error.error.message,
+                      summary: 'Falha ao gravar',
+                    })
+
+                    this.handleServerErrors(serverErrors);
                   }
-                },
-                error: error => {
-                  if (error instanceof HttpErrorResponse) {
-                    if (error.status === 422) {
-                      const serverErrors = error.error.errors;
 
-                      this.messageService.add({
-                        severity: 'danger',
-                        detail: error.error.message,
-                        summary: 'Falha ao gravar',
-                      })
-
-                      this.handleServerErrors(serverErrors);
-                    }
-
-                    if (error.error.error) {
-                      this.messageService.add({
-                        severity: 'danger',
-                        summary: 'Falha ao gravar',
-                        detail: error.error.error
-                      });
-                    }
-                  } else {
-                    console.log('An error occurred:', error);
+                  if (error.error.error) {
                     this.messageService.add({
                       severity: 'danger',
                       summary: 'Falha ao gravar',
-                      detail: 'Ocorreu um erro ao processar a solicitação.'
+                      detail: error.error.error
                     });
                   }
+                } else {
+                  console.log('An error occurred:', error);
+                  this.messageService.add({
+                    severity: 'danger',
+                    summary: 'Falha ao gravar',
+                    detail: 'Ocorreu um erro ao processar a solicitação.'
+                  });
                 }
-              });
-        },
 
+                this.loadingService.hide()
+              }
+            });
+        },
       });
     }
   }

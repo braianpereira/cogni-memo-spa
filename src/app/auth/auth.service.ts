@@ -3,12 +3,14 @@ import { tap } from "rxjs/operators";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {GlobalConstants} from "../common/global-constants";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   httpClient = inject(HttpClient);
+  routerService = inject(Router);
   baseUrl = GlobalConstants.appURL;
 
   constructor() { }

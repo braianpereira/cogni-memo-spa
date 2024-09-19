@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { NgScrollbar } from 'ngx-scrollbar';
 
@@ -18,6 +18,9 @@ import {
 import { DefaultFooterComponent, DefaultHeaderComponent } from './';
 import { navItems } from './_nav';
 import {MessageComponent} from "../../components/message/message.component";
+import {LoadingComponent} from "../../components/loading/loading.component";
+import {LoadingService} from "../../services/loading.service";
+import {NgIf} from "@angular/common";
 
 function isOverflown(element: HTMLElement) {
   return (
@@ -47,11 +50,23 @@ function isOverflown(element: HTMLElement) {
     ContainerComponent,
     RouterOutlet,
     DefaultFooterComponent,
-    MessageComponent
+    MessageComponent,
+    LoadingComponent,
+    NgIf
   ]
 })
-export class DefaultLayoutComponent {
+export class DefaultLayoutComponent implements OnInit {
   public navItems = navItems;
+
+  // primeConfig = inject(PrimeNGConfig)
+
+  ngOnInit() {
+    // this.primengConfig.ripple = true;
+    // this.translateService.setDefaultLang('pt-br');
+
+    // this.primengConfig.setTranslation(ptBr);
+  }
+
 
   onScrollbarUpdate($event: any) {
     // if ($event.verticalUsed) {
