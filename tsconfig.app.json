@@ -9,7 +9,8 @@
     "paths": {
       "@docs-components/*": [
         "./src/components/*"
-      ]
+      ],
+      "@utils/*": ["src/utils/*"]
     }
   },
   "files": [

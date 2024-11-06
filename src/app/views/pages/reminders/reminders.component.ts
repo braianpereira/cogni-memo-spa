@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, Output} from '@angular/core';
 import {
   AccordionButtonDirective,
   AccordionComponent,
@@ -11,9 +11,9 @@ import {
   CardTextDirective,
   ColComponent,
   ContainerComponent, FormCheckComponent, FormCheckInputDirective, FormCheckLabelDirective,
-  GutterDirective, ListGroupDirective, ListGroupItemDirective,
+  GutterDirective, ListGroupDirective, ListGroupItemDirective, ModalComponent, ModalService,
   RowComponent,
-  TabDirective, TabPanelComponent,
+  TabDirective, TableDirective, TabPanelComponent,
   TabsComponent,
   TabsContentComponent,
   TabsListComponent,
@@ -22,6 +22,11 @@ import {
 } from "@coreui/angular";
 import { CommonModule } from "@angular/common";
 import {RemindersService} from "../../../services/reminders.service";
+import {LoadingService} from "../../../services/loading.service";
+import {IconDirective} from "@coreui/icons-angular";
+import {CreateComponent} from "./components/create/create.component";
+import {FormsModule} from "@angular/forms";
+// import {MessageService} from "../../../services/message.service";
 
 @Component({
   selector: 'app-reminders',
@@ -52,37 +57,111 @@ import {RemindersService} from "../../../services/reminders.service";
     ListGroupItemDirective,
     FormCheckComponent,
     FormCheckInputDirective,
-    FormCheckLabelDirective
+    FormCheckLabelDirective,
+    TableDirective,
+    IconDirective,
+    CreateComponent,
+    FormsModule
   ],
   templateUrl: './reminders.component.html',
   styleUrl: './reminders.component.scss'
 })
 export class RemindersComponent implements OnInit {
   private remindersService = inject(RemindersService)
+  loadingService = inject(LoadingService)
+  // private messageService = inject(MessageService)
+
   loadBy: string = ''
   skip: number = 0
 
-  reminders: any[] | undefined
+  @Output() saved: boolean = false
+
+  reminders: IReminders = {
+    today: {label: '', data: []},
+    week: {label: '', data: []},
+    month: {label: '', data: []}
+  }
+
+  remindersIndex = {
+    today: 0,
+    week: 0,
+    month: 0
+  }
+  months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+  month: string = this.months[(new Date()).getMonth()-1];
+  week: string = '';
+  day: string = '';
 
 
-  loadItems(loadBy: string, skip: number) {
-    console.log(loadBy)
-    this.loadBy = loadBy
-    this.skip = skip
+  reset(section: string) {
+    this.remindersIndex[section as keyof typeof this.remindersIndex] = 0
 
-    this.remindersService.get(this.loadBy, this.skip).subscribe({
+    this.loadItems()
+  }
+
+  plusIndex(section: string) {
+    this.remindersIndex[section as keyof typeof this.remindersIndex] = this.remindersIndex[section as keyof typeof this.remindersIndex] + 1
+
+    this.loadItems()
+  }
+
+  minusIndex(section: string) {
+    this.remindersIndex[section as keyof typeof this.remindersIndex] = this.remindersIndex[section as keyof typeof this.remindersIndex] - 1
+
+    this.loadItems()
+  }
+
+  loadItems() {
+    this.loadingService.show()
+
+    this.remindersService.get(this.remindersIndex).subscribe({
       next: (reminders) => {
-        console.log(reminders)
         this.reminders = reminders
+        this.loadingService.hide()
       },
       error: (error) => {
         console.error('Error occurred:', error);
         // Handle the error here, such as showing a message to the user or logging it for further investigation
+        this.loadingService.hide()
       }
     })
   }
 
   ngOnInit(): void {
-    this.loadItems('today', 0)
+    this.loadItems()
   }
+
+  toggleReminder(reminder: IReminder) {
+    console.log(reminder)
+
+    this.loadingService.show()
+    this.remindersService.put({...reminder, status: !reminder.status}).subscribe({
+      next: (data) => {
+        reminder.status = data.status
+        this.loadingService.hide()
+      }
+    })
+  }
+}
+
+export interface IReminder {
+  id: number;
+  user_id: number;
+  reminder_type_id: number;
+  title: string;
+  body: string;
+  reminder_date: string;
+  status: boolean;
+  repeat: boolean;
+  starts_at: string;
+  ends_at: string;
+  reference: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IReminders {
+  today: {label: string; data: IReminder[]};
+  week: {label: string; data: IReminder[]};
+  month: {label: string; data: IReminder[]};
 }

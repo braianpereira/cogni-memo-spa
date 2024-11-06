@@ -72,7 +72,7 @@ import {
   cilPaperPlane,
   cilPen,
   cilPencil,
-  cilPeople,
+  cilPeople, cilPlus,
   cilPrint,
   cilPuzzle,
   cilReportSlash,
@@ -202,7 +202,8 @@ export const iconSubset = {
   cilXCircle,
   cilInfo,
   cilWarning,
-  cilCheckAlt
+  cilCheckAlt,
+  cilPlus,
 };
 
 export enum IconSubset {
@@ -309,5 +310,6 @@ export enum IconSubset {
   cilInfo = 'cilInfo',
   cilWarning = 'cilWarning',
   cilCheckAlt = 'cilCheckAlt',
+  cilPlus = 'cilPlus',
 }
 

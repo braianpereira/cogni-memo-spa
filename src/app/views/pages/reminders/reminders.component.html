@@ -1,92 +1,211 @@
-<!--<c-container [fluid]="true" class="px-1 mb-3">-->
-<!--  <c-row class="w-100 justify-content-around">-->
-<!--    <c-col cCol="3" *ngFor="let item of items">-->
-<!--      <c-card class="{{item.class}} text-center">-->
-<!--        <c-card-body>-->
-<!--          <p cCardText>{{item.name}}</p>-->
-<!--        </c-card-body>-->
-<!--      </c-card>-->
-<!--    </c-col>-->
-<!--  </c-row>-->
-<!--</c-container>-->
 
-
+<div class="mb-2">
+  <app-create-reminder (tarefaCriada)="loadItems()" />
+</div>
 <c-accordion [flush]="true">
-  <c-accordion-item #item0="cAccordionItem" [visible]="true">
+  <c-accordion-item #item0="cAccordionItem" [visible]="true" class="rounded">
     <ng-template cTemplateId="accordionHeaderTemplate">
       <button
-        (click)="item0.toggleItem(); item0.visible && loadItems('today', 0)"
+        (click)="item0.toggleItem();"
         [collapsed]="!item0.visible"
         cAccordionButton
         cTextColor="white"
-        cBgColor="success">
-        Hoje
+        cBgColor="success"
+        class="py-1"
+      >
+        <div class="d-flex justify-content-between w-100">
+          <div>
+            Hoje
+          </div>
+          <div class="me-3">
+            {{ reminders.today.data.length }}
+          </div>
+        </div>
       </button>
     </ng-template>
     <ng-template cTemplateId="accordionBodyTemplate">
       <div class="accordion-body">
-        <strong>This is the first item's accordion body.</strong> It is hidden by default,
-        until the collapse plugin adds the appropriate classes that we use to style each
-        element. These classes control the overall appearance, as well as the showing and
-        hiding via CSS transitions. You can modify any of this with custom CSS or overriding
-        our default variables. It's also worth noting that just about any HTML can go within
-        the <code>.accordion-body</code>, though the transition does limit overflow.
-      </div>
-    </ng-template>
-  </c-accordion-item>
-  <c-accordion-item #item1="cAccordionItem" [visible]="false">
-    <ng-template cTemplateId="accordionHeaderTemplate">
-      <button (click)="item1.toggleItem(); item1.visible && loadItems('tomorrow', 0)" [collapsed]="!item1.visible" cAccordionButton cBgColor="info">
-        Amanha
-      </button>
-    </ng-template>
-    <ng-template cTemplateId="accordionBodyTemplate">
-      <div class="accordion-body">
-        <div *ngIf="reminders !== undefined && reminders.length === 0" class="text-center fs-4">
+        <div class="w-100">
+          <button
+            class="me-1 w-auto {{remindersIndex.today ? '' : 'disabled'}}"
+            cButton
+            color="info"
+            size="sm"
+            variant="outline"
+            (click)="reset('today')"
+          >Hoje</button>
+          <button
+            class="me-1 w-auto"
+            cButton
+            color="info"
+            size="sm"
+            variant="ghost"
+            (click)="minusIndex('today')"
+          >
+            <svg cIcon name="cilChevronLeft" size="sm"></svg>
+          </button>
+          <button
+            class="me-1 w-auto"
+            cButton color="info"
+            size="sm"
+            variant="ghost"
+            (click)="plusIndex('today')"
+          >
+            <svg cIcon name="cilChevronRight" size="sm"></svg>
+          </button>
+          <span class="me-1 text-info">{{ reminders.today.label }}</span>
+        </div>
+        <div *ngIf="reminders.today.data.length === 0" class="text-center">
           <p>Sem tarefas.</p>
         </div>
-        <ul *ngIf="reminders !== undefined && reminders.length > 0" cListGroup>
-          <li cListGroupItem *ngFor="let reminder of reminders">
-            <c-form-check class="fs-4">
-              <input cFormCheckInput id="checkOne" type="checkbox" />
-              <label cFormCheckLabel for="checkOne">{{reminder.title}}</label>
+        <ul *ngIf="reminders.today.data.length > 0" cListGroup>
+          <li cListGroupItem *ngFor="let reminder of reminders.today.data">
+            <c-form-check class="">
+              <input cFormCheckInput  type="checkbox" />
+              <label cFormCheckLabel>{{reminder.title}}</label>
             </c-form-check>
           </li>
         </ul>
       </div>
     </ng-template>
   </c-accordion-item>
-  <c-accordion-item #item3="cAccordionItem" [visible]="false">
+  <c-accordion-item #item3="cAccordionItem" [visible]="false" class="rounded">
     <ng-template cTemplateId="accordionHeaderTemplate">
-      <button (click)="item3.toggleItem(); item3.visible && loadItems('weekly', 0)" [collapsed]="!item3.visible" cTextColor="white" cAccordionButton cBgColor="danger">
-        Semanais
+      <button (click)="item3.toggleItem();" [collapsed]="!item3.visible" cTextColor="white" cAccordionButton cBgColor="primary"
+              class="py-1">
+        <div class="d-flex justify-content-between w-100">
+          <div>
+            Na semana
+          </div>
+          <div class="me-3">
+            {{ reminders.week.data.length }}
+          </div>
+        </div>
       </button>
     </ng-template>
     <ng-template cTemplateId="accordionBodyTemplate">
       <div class="accordion-body">
-        <strong>This is the third item's accordion body.</strong> It is hidden by default,
-        until the collapse plugin adds the appropriate classes that we use to style each
-        element. These classes control the overall appearance, as well as the showing and
-        hiding via CSS transitions. You can modify any of this with custom CSS or overriding
-        our default variables. It's also worth noting that just about any HTML can go within
-        the <code>.accordion-body</code>, though the transition does limit overflow.
+        <div class="w-100">
+          <button
+            class="me-1 w-auto {{remindersIndex.week ? '' : 'disabled'}}"
+            cButton
+            color="info"
+            size="sm"
+            variant="outline"
+            (click)="reset('week')"
+          >Hoje</button>
+          <button
+            class="me-1 w-auto"
+            cButton
+            color="info"
+            size="sm"
+            variant="ghost"
+            (click)="minusIndex('week')"
+          >
+            <svg cIcon name="cilChevronLeft" size="sm"></svg>
+          </button>
+          <button
+            class="me-1 w-auto"
+            cButton color="info"
+            size="sm"
+            variant="ghost"
+            (click)="plusIndex('week')"
+          >
+            <svg cIcon name="cilChevronRight" size="sm"></svg>
+          </button>
+          <span class="me-1 text-info">{{ reminders.week.label }}</span>
+        </div>
+        <div *ngIf="reminders.week.data.length === 0" class="text-center">
+          <p>Sem tarefas.</p>
+        </div>
+        <ul *ngIf="reminders.week.data.length > 0" cListGroup>
+          <li cListGroupItem *ngFor="let reminder of reminders.week.data">
+            <c-form-check class="">
+              <input cFormCheckInput type="checkbox" />
+              <label cFormCheckLabel >{{reminder.title}}</label>
+            </c-form-check>
+          </li>
+        </ul>
       </div>
     </ng-template>
   </c-accordion-item>
-  <c-accordion-item #item4="cAccordionItem" [visible]="false">
+  <c-accordion-item #item4="cAccordionItem" [visible]="false" class="rounded">
     <ng-template cTemplateId="accordionHeaderTemplate">
-      <button (click)="item4.toggleItem(); item4.visible && loadItems('monthly', 0)" [collapsed]="!item4.visible" cAccordionButton cBgColor="secondary">
-        Mensais
+      <button (click)="item4.toggleItem()" [collapsed]="!item4.visible" cAccordionButton cBgColor="secondary"
+              class="py-1">
+        <div class="d-flex justify-content-between w-100">
+          <div>
+            Mensais
+          </div>
+          <div class="me-3">
+            {{ reminders.month.data.length }}
+          </div>
+        </div>
       </button>
     </ng-template>
     <ng-template cTemplateId="accordionBodyTemplate">
       <div class="accordion-body">
-        <strong>This is the third item's accordion body.</strong> It is hidden by default,
-        until the collapse plugin adds the appropriate classes that we use to style each
-        element. These classes control the overall appearance, as well as the showing and
-        hiding via CSS transitions. You can modify any of this with custom CSS or overriding
-        our default variables. It's also worth noting that just about any HTML can go within
-        the <code>.accordion-body</code>, though the transition does limit overflow.
+        <div class="w-100">
+          <button
+            class="me-1 w-auto {{remindersIndex.month ? '' : 'disabled'}}"
+            cButton
+            color="info"
+            size="sm"
+            variant="outline"
+            (click)="reset('month')"
+          >Hoje</button>
+          <button
+            class="me-1 w-auto"
+            cButton
+            color="info"
+            size="sm"
+            variant="ghost"
+            (click)="minusIndex('month')"
+          >
+            <svg cIcon name="cilChevronLeft" size="sm"></svg>
+          </button>
+          <button
+            class="me-1 w-auto"
+            cButton color="info"
+            size="sm"
+            variant="ghost"
+            (click)="plusIndex('month')"
+          >
+            <svg cIcon name="cilChevronRight" size="sm"></svg>
+          </button>
+          <span class="me-1 text-info">{{ reminders.month.label }}</span>
+        </div>
+        <div *ngIf="reminders.month.data.length === 0" class="text-center">
+          <p>Sem tarefas.</p>
+        </div>
+        <table cTable small *ngIf="reminders.month.data.length > 0" class="table-sm" style="font-size: 0.7rem !important;">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Data</th>
+            <th scope="col">Repete</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr  *ngFor="let reminder of reminders.month.data">
+            <th scope="row" [ngClass]="{ 'text-secondary text-decoration-line-through': reminder.status }">
+              <c-form-check class="" >
+                <input
+                  cFormCheckInput
+                  [checked]="reminder.status"
+                  type="checkbox"
+                  class="border-primary"
+                  (change)="toggleReminder(reminder)"
+                />
+              </c-form-check>
+            </th>
+            <td [ngClass]="{ 'text-secondary text-decoration-line-through': reminder.status }">{{reminder.title}}</td>
+            <td style="font-size: 0.7rem">{{reminder.reminder_date | date: 'dd/MM/yyyy'}}</td>
+            <td>&#64;mdo</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </ng-template>
   </c-accordion-item>

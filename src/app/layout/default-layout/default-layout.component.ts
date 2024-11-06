@@ -20,7 +20,7 @@ import { navItems } from './_nav';
 import {MessageComponent} from "../../components/message/message.component";
 import {LoadingComponent} from "../../components/loading/loading.component";
 import {LoadingService} from "../../services/loading.service";
-import {NgIf} from "@angular/common";
+import {NgIf, NgStyle} from "@angular/common";
 
 function isOverflown(element: HTMLElement) {
   return (
@@ -52,13 +52,20 @@ function isOverflown(element: HTMLElement) {
     DefaultFooterComponent,
     MessageComponent,
     LoadingComponent,
-    NgIf
+    NgIf,
+    NgStyle
   ]
 })
 export class DefaultLayoutComponent implements OnInit {
   public navItems = navItems;
 
   // primeConfig = inject(PrimeNGConfig)
+  sidebarNavStyles = {
+    '--cui-sidebar-nav-link-icon-font-size': '0.75rem',
+    '--cui-sidebar-nav-link-icon-width': '0.75rem',
+    '--cui-sidebar-nav-link-icon-height': '0.75rem',
+    '--cui-nav-link-font-size': '0.75rem',
+  };
 
   ngOnInit() {
     // this.primengConfig.ripple = true;

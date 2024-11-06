@@ -1,0 +1,108 @@
+<button
+  cButton
+  color="secondary"
+  variant="ghost"
+  size="sm"
+  (click)="openModal()"
+>
+  <svg cIcon name="cilPlus" size="sm" title="List Icon"></svg>
+  Criar lembrete
+</button>
+
+<c-modal
+  id="createReminder"
+  backdrop="static"
+  [visible]="visible"
+  (visibleChange)="handleModalChange($event)"
+>
+  <form
+    cForm
+    (ngSubmit)="onSubmit()"
+    [validated]="false"
+    novalidate
+  >
+  <c-modal-header>
+    <h5 cModalTitle>Novo lembrete</h5>
+  </c-modal-header>
+  <c-modal-body>
+    <c-row>
+      <label cLabel="col" cCol class="col-sm-3 col-2" sizing="sm" for="title">Título</label>
+      <c-col class="mb-3 col-sm-9 col-10" [formGroup]="form">
+        <input
+          cFormControl
+          class="mb-1"
+          id="title"
+          sizing="sm"
+          formControlName="title"
+          placeholder="Título"
+          [ngClass]="{ 'is-invalid':form.get('title')?.invalid && (form.get('title')?.dirty || form.get('title')?.touched) }"
+          autocomplete="false"
+        />
+        <div *ngIf="form.get('title')?.invalid && (form.get('title')?.dirty || form.get('title')?.touched)"
+             class="invalid-feedback">
+          <div *ngIf="form.get('title')?.hasError('required')" class="text-center">
+            Títilo obrigatório.
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <label cLabel="col" cCol class="col-sm-3 col-2" sizing="sm" for="reminder_type_id">Categoria</label>
+      <c-col class="mb-3 col-sm-9 col-10">
+        <c-input-group  sizing="sm" [formGroup]="form">
+          <select cSelect sizing="sm" id="reminder_type_id" formControlName="reminder_type_id"
+                  [ngClass]="{ 'is-invalid':form.get('reminder_type_id')?.invalid && (form.get('reminder_type_id')?.dirty || form.get('reminder_type_id')?.touched) }"
+          >
+            <option [value]="type.id" *ngFor="let type of types">{{type.name}}</option>
+          </select>
+          <button cButton size="sm" color="secondary" type="button" variant="outline">
+            <svg cIcon name="cilPlus" size="sm" title="Adicionar categoria"></svg>
+          </button>
+        </c-input-group>
+        <div *ngIf="form.get('reminder_type_id')?.invalid && (form.get('reminder_type_id')?.dirty || form.get('reminder_type_id')?.touched)"
+             class="invalid-feedback">
+          <div *ngIf="form.get('reminder_type_id')?.hasError('required')" class="text-center">
+            Categoria obrigatória.
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+    <c-row>
+      <label cLabel cCol class="col-sm-3 col-2" for="repeat">Repete</label>
+      <c-col [formGroup]="form" class="mb-3 col-sm-3">
+        <select cSelect sizing="sm" id="repeat" formControlName="repeat">
+          <option [value]="false">Não</option>
+          <option [value]="true">Sim</option>
+        </select>
+      </c-col>
+      <label cLabel cCol class="col-sm-2" for="date">Período</label>
+      <c-col [formGroup]="form" class="mb-3 col-sm-4">
+        <select cSelect sizing="sm" id="period" formControlName="period">
+          <option value="d">Diariamente</option>
+          <option value="s">semanalmente</option>
+          <option value="m">Mensalmente</option>
+        </select>
+      </c-col>
+    </c-row>
+    <c-row>
+      <label cLabel cCol class="col-sm-3" for="date">Data</label>
+      <c-col [formGroup]="form" class="mb-3 col-sm-4">
+        <input cFormControl id="date" sizing="sm" formControlName="reminder_date" placeholder="Data" type="date" autocomplete="off" />
+      </c-col>
+      <ng-container *ngIf="form.get('repeat')?.value">
+        <label cLabel cCol class="col-sm-1" for="ends_at">Até</label>
+        <c-col [formGroup]="form" class="mb-3 col-sm-4">
+          <input cFormControl id="ends_at" sizing="sm" formControlName="ends_at" type="date" autocomplete="off" />
+        </c-col>
+      </ng-container>
+    </c-row>
+  </c-modal-body>
+  <c-modal-footer>
+    <button cButton (click)="closeModal()" color="secondary">
+      Cancelar
+    </button>
+    <button cButton color="primary" type="submit">Gravar</button>
+  </c-modal-footer>
+  </form>
+</c-modal>
